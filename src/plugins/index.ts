@@ -1,4 +1,3 @@
-import { payloadCloudPlugin } from '@payloadcms/payload-cloud'
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
@@ -10,7 +9,6 @@ import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
 import { FixedToolbarFeature, HeadingFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
 import { searchFields } from '@/search/fieldOverrides'
 import { beforeSyncWithSearch } from '@/search/beforeSync'
-import { s3Storage } from '@payloadcms/storage-s3'
 // import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 
 import { Page, Post } from '@/payload-types'
@@ -27,25 +25,6 @@ const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
 }
 
 export const plugins: Plugin[] = [
-  s3Storage({
-    collections: {
-      media: {
-        prefix: 'media',
-      },
-    },
-    disableLocalStorage: true,
-    acl: 'private',
-    bucket: process.env.S3_BUCKET as string,
-    config: {
-      endpoint: process.env.S3_ENDPOINT,
-      forcePathStyle: true,
-      region: 'us-east-1', // Dummy region to avoid error
-      credentials: {
-        accessKeyId: process.env.S3_ACCESS_KEY as string,
-        secretAccessKey: process.env.S3_SECRET_KEY as string,
-      },
-    },
-  }),
   redirectsPlugin({
     collections: ['pages', 'posts'],
     overrides: {
@@ -110,5 +89,4 @@ export const plugins: Plugin[] = [
       },
     },
   }),
-  payloadCloudPlugin(),
 ]

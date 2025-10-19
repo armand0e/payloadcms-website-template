@@ -14,28 +14,7 @@ import { RenderHero } from '@/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 
-export async function generateStaticParams() {
-  const payload = await getPayload({ config: configPromise })
-  const pages = await payload.find({
-    collection: 'pages',
-    draft: false,
-    limit: 1000,
-    overrideAccess: false,
-    select: {
-      slug: true,
-    },
-  })
-
-  const params = pages.docs
-    ?.filter((doc) => {
-      return doc.slug !== 'home'
-    })
-    .map(({ slug }) => {
-      return { slug }
-    })
-
-  return params
-}
+export const dynamic = 'force-dynamic'
 
 type Args = {
   params: Promise<{
@@ -78,11 +57,7 @@ export default async function Page({ params: paramsPromise }: Args) {
 
 export async function generateMetadata({ params: paramsPromise }): Promise<Metadata> {
   const { slug = 'home' } = await paramsPromise
-  const page = await queryPageBySlug({
-    slug,
-  })
-
-  return generateMeta({ doc: page })
+  return generateMeta({ doc: { title: slug === 'home' ? 'Home' : slug } as unknown as PageType })
 }
 
 const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {

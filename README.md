@@ -2,7 +2,6 @@
 
 This is the official [Payload Website Template](https://github.com/payloadcms/payload/blob/main/templates/website). Use it to power websites, blogs, or portfolios from small to enterprise. This repo includes a fully-working backend, enterprise-grade admin panel, and a beautifully designed, production-ready website.
 
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/template/7fbyq-)
 
 This template is right for you if you are working on:
 
@@ -61,9 +60,22 @@ That's it! Changes made in `./src` will be reflected in your app. Follow the on-
 
 ### Deployment
 
-When you're ready to go live, see the [template deployment docs](https://railway.app/template/7fbyq-) for more details or click the button below to instantly spin up an instance of this template on Railway.
+#### Dokploy (Docker Compose)
 
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/template/7fbyq-)
+Deploy this template on Dokploy using the included `docker-compose.yml`:
+
+1. In Dokploy, create a new Compose app and point it at your repository.
+2. Ensure the compose file uses the `app` and `db` services from `docker-compose.yml`.
+3. Configure environment variables on the `app` service:
+   - `PAYLOAD_SECRET` — a strong random string
+   - `POSTGRES_URI` — `postgresql://payload:payload@db:5432/payload`
+   - `NEXT_PUBLIC_SERVER_URL` — e.g. `https://your-domain.com`
+4. Expose port `3000` and map your domain to the `app` service.
+5. Persist volumes:
+   - `db-data` for Postgres data
+   - `uploads` mapped to `/app/public/media` for uploaded files
+6. Health check path: `/api/health` (already provided by this template).
+7. Deploy. Dokploy will build the image using the provided `Dockerfile` and run the services.
 
 ## How it works
 

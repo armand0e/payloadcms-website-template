@@ -8,6 +8,8 @@ import { Post } from '@/payload-types'
 import { Search } from '@/search/Component'
 import PageClient from './page.client'
 
+export const dynamic = 'force-dynamic'
+
 type Args = {
   searchParams: Promise<{
     q: string

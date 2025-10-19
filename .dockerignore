@@ -1,0 +1,12 @@
+.next
+node_modules
+pnpm-store
+.pnpm-store
+.git
+.gitignore
+.vscode
+.env
+.env.local
+Dockerfile
+coverage
+**/*.log
